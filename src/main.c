@@ -6,15 +6,14 @@
 
 #include "../include/word_gen.h"
 #include "../include/hash_crack.h"
+#include "../include/constants.h"
+#include "../include/parser.h"
 
 //------Constants
 char* az = "abcdefghijklmnopqrstuvwxyz";
 
-//------Main
-int main(int argc, char* argv[]) {
-    (void) argc;
-    (void) argv;
-
+//------Functions
+void tests() {
     printf("test\n");
 
     // for (int k = 0 ; k < 1000 ; ++k) {
@@ -23,25 +22,27 @@ int main(int argc, char* argv[]) {
     //     free(w);
     // }
 
-    // int s = 2;
-    // char* a = malloc(((unsigned long) s) * sizeof(char));
-    // a[0] = 'a';
-    // a[1] = '\0';
+    unsigned long s = 6;
+    char* a = malloc(((unsigned long) s) * sizeof(char));
+    for (int k = 0 ; k < 5 ; ++k)
+        a[k] = 'a';
+
+    a[5] = '\0';
 
     // char* a = get_word(1, az);
     // unsigned long s = strlen(a);
-    //
-    // printf("%s\n", a);
-    // increment_word(&a, &s, 20, az);
-    // printf("%s\n", a);
+
+    printf("%s\n", a);
+    increment_word(&a, &s, 1, az);
+    printf("%s\n", a);
 
     // Test increment_word
     char* w = get_word(1, az);
-    unsigned long s = strlen(w);
+    unsigned long s_ = strlen(w);
 
-    for (int k = 0 ; k < 1000 ; ++k) {
+    for (int k = 0 ; k < 10 ; ++k) {
         printf("%d: %s\n", k, w);
-        increment_word(&w, &s, 1, az);
+        increment_word(&w, &s_, 10, az);
     }
 
     free(w);
@@ -62,6 +63,31 @@ int main(int argc, char* argv[]) {
     b2 = test_word("aja", strlen("aja"), digest, 1);
 
     printf("b1 : %d, b2: %d\n", b1, b2);
+}
 
-    return 0;
+void test_crack_md5(char* h_digest) {
+    char* w = get_word(1, az);
+    unsigned long s = strlen(w);
+
+    unsigned long k = 0;
+    while (! test_word(w, s, h_digest, 1)) {
+        increment_word(&w, &s, 1, az);
+        s = strlen(w);
+
+        if (++k % 1000000 == 0)
+            printf("Testing word '%s', length %ld\n", w, strlen(w));
+    }
+
+    printf("\nFound : '%s'\n", w);
+
+    free(w);
+    w = NULL;
+}
+
+//------Main
+int main(int argc, char* argv[]) {
+    // tests();
+    // test_crack_md5("1a528bb096164775b3cc347ca7293fe6");
+
+    return parse(argc, argv);
 }

@@ -4,9 +4,6 @@
 //------Includes
 #include <stdbool.h>
 
-//------Constants
-#define DIGEST_SIZE 256
-
 //------Signatures
 void hash(char* txt, unsigned long len, int h_func, char* digest_ptr);
 bool test_word(char* word, unsigned long len, char* expected, int h_func);

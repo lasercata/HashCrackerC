@@ -6,8 +6,9 @@
 
 #include <openssl/evp.h>
 
-// #include "../include/word_gen.h"
 #include "../include/hash_crack.h"
+// #include "../include/word_gen.h"
+#include "../include/constants.h"
 
 //------Signatures
 
