@@ -6,11 +6,11 @@
 
 #include "../include/word_gen.h"
 #include "../include/hash_crack.h"
-#include "../include/constants.h"
+#include "../include/utils.h"
 #include "../include/parser.h"
 
 //------Constants
-char* az = "abcdefghijklmnopqrstuvwxyz";
+// char* az = "abcdefghijklmnopqrstuvwxyz";
 
 //------Functions
 void tests() {
@@ -33,23 +33,23 @@ void tests() {
     // unsigned long s = strlen(a);
 
     printf("%s\n", a);
-    increment_word(&a, &s, 1, az);
+    increment_word(&a, &s, 1, (char*) alf_arr[1]);
     printf("%s\n", a);
 
     // Test increment_word
-    char* w = get_word(1, az);
+    char* w = get_word(1, (char*) alf_arr[1]);
     unsigned long s_ = strlen(w);
 
     for (int k = 0 ; k < 10 ; ++k) {
         printf("%d: %s\n", k, w);
-        increment_word(&w, &s_, 10, az);
+        increment_word(&w, &s_, 10, (char*) alf_arr[1]);
     }
 
     free(w);
     w = NULL;
 
     // Test hash
-    char* w_h = get_word(1000, az);
+    char* w_h = get_word(1000, (char*) alf_arr[1]);
     unsigned long len = strlen(w_h);
 
     char digest[DIGEST_SIZE];
@@ -66,12 +66,12 @@ void tests() {
 }
 
 void test_crack_md5(char* h_digest) {
-    char* w = get_word(1, az);
+    char* w = get_word(1, (char*) alf_arr[1]);
     unsigned long s = strlen(w);
 
     unsigned long k = 0;
     while (! test_word(w, s, h_digest, 1)) {
-        increment_word(&w, &s, 1, az);
+        increment_word(&w, &s, 1, (char*) alf_arr[1]);
         s = strlen(w);
 
         if (++k % 1000000 == 0)
@@ -88,6 +88,7 @@ void test_crack_md5(char* h_digest) {
 int main(int argc, char* argv[]) {
     // tests();
     // test_crack_md5("1a528bb096164775b3cc347ca7293fe6");
+
 
     return parse(argc, argv);
 }

@@ -129,13 +129,13 @@ char* get_word(unsigned long n, char* alf) { //TODO: free result
  *     'z' + 1 = 'aa' ;
  *     'az' + 1 = 'ba' ;
  *     ...
+ *
+ * If the word needs to be elongated (more than `*size_ptr`), then the size will be doubled.
  * 
  * @param word_ptr - a pointer to the word to increment. It will be modified to contain the new word
  * @param size_ptr - a pointer to the size of the char array containing the word.
  * @param i - the value of the increment to make
  * @param alf - the alphabet to use
- *
- * If the word needs to be elongated (more than `*size_ptr`), then the size will be doubled.
  */
 void increment_word(char** word_ptr, unsigned long* size_ptr, unsigned long i, char* alf) {
     if (i == 0)

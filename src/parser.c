@@ -5,7 +5,7 @@
 #include <stdbool.h>
 
 #include "../include/parser.h"
-#include "../include/constants.h"
+#include "../include/utils.h"
 #include "../include/hash_crack.h"
 
 //------Signatures
@@ -50,11 +50,12 @@ int parse(int argc, char** argv) {
     //---Init
     char hash_digest[DIGEST_SIZE];
     char algo[7] = "md5";
+    int h_func = 1;
     char alf[ALF_MAX_SIZE];
     strcpy(alf, alf_arr[1]);
     int nb_threads = 0;
-    int min = 0;
-    int limit = 0;
+    unsigned min = 0;
+    unsigned limit = 0;
 
     bool hash_digest_is_def = false;
     bool silent_is_def = false;
@@ -109,6 +110,16 @@ int parse(int argc, char** argv) {
             }
 
             strcpy(algo, argv[k + 1]);
+
+            if (strcmp(algo, "md5") == 0)
+                h_func = 1;
+            else if (strcmp(algo, "sha1") == 0)
+                h_func = 2;
+            else if (strcmp(algo, "sha256") == 0)
+                h_func = 3;
+            else if (strcmp(algo, "sha512") == 0)
+                h_func = 4;
+
             k++; // Jump the next value (it is algo).
 
             algo_is_def = true;
@@ -178,13 +189,15 @@ int parse(int argc, char** argv) {
                 return 1;
             }
 
-            min = atoi(argv[k + 1]);
+            int tmp = atoi(argv[k + 1]);
 
-            if (min <= 0) {
+            if (tmp <= 0) {
                 print_usage(argv[0]);
                 printf("HashCracker: error: argument -m/--min: value should be a strictly positive integer, but '%s' was found\n", argv[k + 1]);
                 return 1;
             }
+
+            min = (unsigned) tmp;
 
             k++; // Jump the next value (it is NB_THREADS).
 
@@ -202,13 +215,15 @@ int parse(int argc, char** argv) {
                 return 1;
             }
 
-            limit = atoi(argv[k + 1]);
+            int tmp = atoi(argv[k + 1]);
 
-            if (limit <= 0) {
+            if (tmp <= 0) {
                 print_usage(argv[0]);
                 printf("HashCracker: error: argument -l/--limit: value should be a strictly positive integer, but '%s' was found\n", argv[k + 1]);
                 return 1;
             }
+
+            limit = (unsigned) tmp;
 
             k++; // Jump the next value (it is NB_THREADS).
 
@@ -253,6 +268,8 @@ int parse(int argc, char** argv) {
     printf("nb_threads: %d\n", nb_threads);
     printf("min:        %d\n", min);
     printf("limit:      %d\n", limit);
+
+    crack_thread_i(0, 1, alf, hash_digest, h_func, min, limit, silent_is_def);
 
     return 0;
 }
