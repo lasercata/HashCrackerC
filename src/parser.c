@@ -35,8 +35,8 @@ void print_help(char* argv0) {
     printf("    -h, --help                   Show this help message and exit\n");
     printf("    -V, --version                Show version and exit\n");
     printf("    -s, --silent                 Only print the password and nothing else\n");
-    printf("    -A, --algorithm              The hash algorithm. Defaults to 'md5'\n");
-    printf("    -a, --alphabet               The alphabet to use. Can be '09', 'az', 'AZ', 'az09', 'azAZ', 'azAZ09', or a custom one\n");
+    printf("    -A, --algorithm ALGORITHM    The hash algorithm. Defaults to 'md5'\n");
+    printf("    -a, --alphabet ALPHABET      The alphabet to use. Can be '09', 'az', 'AZ', 'az09', 'azAZ', 'azAZ09', or a custom one\n");
     printf("    -t, --nb-threads NB_THREADS  Specify the number of threads to use\n");
     printf("    -m, --min MIN                try only words with at least MIN characters\n");
     printf("    -l, --limit LIMIT            If used, limit the length of words to LIMIT\n");
@@ -78,7 +78,7 @@ int parse(int argc, char** argv) {
             return 0;
         }
         else if (strcmp(argv[k], "-V") == 0 || strcmp(argv[k], "--version") == 0) { // Version
-            printf("HashCracker version : %s\n", version);
+            printf("HashCracker %s (C implementation)\n", version);
             return 0;
         }
 
