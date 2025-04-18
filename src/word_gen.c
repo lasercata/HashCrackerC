@@ -185,8 +185,10 @@ void increment_word(char** word_ptr, unsigned long* size_ptr, unsigned long i, c
             //-Sliding the word
             word[len + 1] = '\0';
 
-            for (unsigned long j = 0 ; j < len ; ++j)
-                word[j + 1] = word[j];
+            for (unsigned long j = 0 ; j < len ; ++j) {
+                unsigned long idx = len - j - 1;
+                word[idx + 1] = word[idx];
+            }
 
             word[0] = alf[new_i % alf_len];
             

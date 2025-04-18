@@ -65,6 +65,43 @@ void tests() {
     printf("b1 : %d, b2: %d\n", b1, b2);
 }
 
+void test_incr_w_0() {
+    unsigned long s = 3;
+    char* a = malloc(((unsigned long) s) * sizeof(char));
+    a[0] = 'z';
+    a[1] = 'z';
+    a[2] = '\0';
+
+    printf("%s\n", a);
+
+    increment_word(&a, &s, 3, (char*) alf_arr[1]);
+
+    printf("word (+ 3): %s\n", a);
+}
+void test_incr_w(char c) {
+    unsigned long s = 2;
+    char* a = malloc(((unsigned long) s) * sizeof(char));
+    a[0] = c;
+    a[1] = '\0';
+
+    printf("%s\n", a);
+
+    int k = 0;
+    while (true) {
+        increment_word(&a, &s, 3, (char*) alf_arr[1]);
+
+        if (k % 100 == 0 || k == 231 || k == 232)
+            printf("k: %d, word: %s\n", k, a);
+
+        if (strlen(a) == 3)
+            break;
+
+        k++;
+    }
+
+    printf("k: %d, word: %s\n", k, a);
+}
+
 void test_crack_md5(char* h_digest) {
     char* w = get_word(1, (char*) alf_arr[1]);
     unsigned long s = strlen(w);
@@ -88,7 +125,6 @@ void test_crack_md5(char* h_digest) {
 int main(int argc, char* argv[]) {
     // tests();
     // test_crack_md5("1a528bb096164775b3cc347ca7293fe6");
-
 
     return parse(argc, argv);
 }
