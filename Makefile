@@ -21,7 +21,7 @@ PROD_FLAGS = -O2
 # }}}2
 
 # ------ Linker ------{{{2
-LD_FLAGS = -lcrypto -lssl
+LD_FLAGS = -lcrypto -lssl -pthread
 # LD_FLAGS = -lm -W -Wall -pedantic -pthread
 # }}}2
 

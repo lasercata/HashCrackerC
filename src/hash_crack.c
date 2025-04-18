@@ -120,17 +120,11 @@ char* get_first_word(unsigned min, unsigned i, char* alf) {
  * @param silent          - if true, only prints the password. Otherwise, regularly shows progress.
  */
 void crack_thread_i(unsigned i, unsigned n, char* alf, char* expected_digest, int h_func, unsigned min, unsigned limit, bool silent) {
-    //---Init
-    // const unsigned long alf_len = strlen(alf);
-
     //---Get first word
     if (min == 0)
         min++;
 
-    // unsigned long w_index = uint_pow(alf_len, min - 1) + i - 1;
     char* word = get_first_word(min, i, alf);
-    // char* word = get_word(w_index, alf);
-    // printf("w_index: %ld, word: %s\n", w_index, word);
 
     unsigned long word_len = strlen(word);
     unsigned long word_size = strlen(word); // Will contain the size of the char* containing the word (can be greater than the string)
@@ -140,8 +134,9 @@ void crack_thread_i(unsigned i, unsigned n, char* alf, char* expected_digest, in
     while (limit == 0 || word_len < limit) {
         //---Verbose
         if (i == 0 && (! silent) && counter % LARGE_NB == 0)
-            printf("Testing word '%s' (length: %ld)\n", word, word_len);
+            printf("[Thread %d] Testing word '%s' (length: %ld)\n", i, word, word_len);
 
+        //---Test word
         if (test_word(word, word_len, expected_digest, h_func)) {
             if (silent)
                 printf("%s", word);

@@ -6,7 +6,7 @@
 
 #include "../include/parser.h"
 #include "../include/utils.h"
-#include "../include/hash_crack.h"
+#include "../include/multithread.h"
 
 //------Signatures
 void print_usage(char* argv0);
@@ -53,7 +53,7 @@ int parse(int argc, char** argv) {
     int h_func = 1;
     char alf[ALF_MAX_SIZE];
     strcpy(alf, alf_arr[1]);
-    int nb_threads = 0;
+    unsigned nb_threads = 0;
     unsigned min = 0;
     unsigned limit = 0;
 
@@ -165,13 +165,15 @@ int parse(int argc, char** argv) {
                 return 1;
             }
 
-            nb_threads = atoi(argv[k + 1]);
+            int tmp = atoi(argv[k + 1]);
 
-            if (nb_threads <= 0) {
+            if (tmp <= 0) {
                 print_usage(argv[0]);
                 printf("HashCracker: error: argument -t/--nb-threads: value should be a strictly positive integer, but '%s' was found\n", argv[k + 1]);
                 return 1;
             }
+
+            nb_threads = (unsigned) tmp;
 
             k++; // Jump the next value (it is NB_THREADS).
 
@@ -257,19 +259,14 @@ int parse(int argc, char** argv) {
     
     //---Use arguments
 
-    //TODO
+    // printf("hash:       %s\n", hash_digest);
+    // printf("algo:       %s\n", algo);
+    // printf("alf:        %s\n", alf);
+    // printf("nb_threads: %d\n", nb_threads);
+    // printf("min:        %d\n", min);
+    // printf("limit:      %d\n", limit);
 
-    (void) limit_is_def;
-    (void) silent_is_def;
-
-    printf("hash:       %s\n", hash_digest);
-    printf("algo:       %s\n", algo);
-    printf("alf:        %s\n", alf);
-    printf("nb_threads: %d\n", nb_threads);
-    printf("min:        %d\n", min);
-    printf("limit:      %d\n", limit);
-
-    crack_thread_i(0, 1, alf, hash_digest, h_func, min, limit, silent_is_def);
+    launch_multithreads(hash_digest, alf, h_func, min, limit, silent_is_def, nb_threads);
 
     return 0;
 }
