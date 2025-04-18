@@ -117,9 +117,10 @@ char* get_first_word(unsigned min, unsigned i, char* alf) {
  * @param h_func          - the number of the hash function to use. Cf the doc of `hash` for the possible values ;
  * @param min             - the minimum length of the words to try ;
  * @param limit           - the maximum lenght of the words to try. If 0, there is no limit ;
- * @param silent          - if true, only prints the password. Otherwise, regularly shows progress.
+ * @param silent          - if true, only prints the password. Otherwise, regularly shows progress ;
+ * @param found_ptr       - a pointer to a flag indicating if the word has been found. Used to stop all the threads.
  */
-void crack_thread_i(unsigned i, unsigned n, char* alf, char* expected_digest, int h_func, unsigned min, unsigned limit, bool silent) {
+void crack_thread_i(unsigned i, unsigned n, char* alf, char* expected_digest, int h_func, unsigned min, unsigned limit, bool silent, bool* found_ptr) {
     //---Get first word
     if (min == 0)
         min++;
@@ -147,10 +148,15 @@ void crack_thread_i(unsigned i, unsigned n, char* alf, char* expected_digest, in
             }
 
             //TODO: stop all the other threads
+            *found_ptr = true;
 
             free(word);
             return;
         }
+
+        //---Check if found (by an other thread). To be more efficient, the check is not done very often.
+        if (counter % (LARGE_NB / 10) == 0 && *found_ptr)
+            break;
 
         //---Get next word
         increment_word(&word, &word_size, n, alf);

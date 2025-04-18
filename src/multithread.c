@@ -19,6 +19,7 @@ typedef struct {
     unsigned min;
     unsigned limit;
     bool silent;
+    bool* found_ptr;
 } crack_thread_arguments;
 
 //------Signatures
@@ -34,7 +35,7 @@ void* crack_thread_wrapper(void* args);
 void* crack_thread_wrapper(void* args) {
     crack_thread_arguments a = *(crack_thread_arguments*) args;
 
-    crack_thread_i(a.i, a.n, a.alf, a.expected_digest, a.h_func, a.min, a.limit, a.silent);
+    crack_thread_i(a.i, a.n, a.alf, a.expected_digest, a.h_func, a.min, a.limit, a.silent, a.found_ptr);
 
     return NULL;
 }
@@ -60,6 +61,7 @@ void launch_multithreads(char* hash_digest, char* alf, int h_func, unsigned min,
     //---Init
     pthread_t* threads = malloc(nb_threads * sizeof(pthread_t));
     crack_thread_arguments* args_arr = malloc(nb_threads * sizeof(crack_thread_arguments));
+    bool found = false;
 
     //---Creation
     for (unsigned k = 0 ; k < nb_threads ; ++k) {
@@ -71,6 +73,7 @@ void launch_multithreads(char* hash_digest, char* alf, int h_func, unsigned min,
         args_arr[k].min = min;
         args_arr[k].limit = limit;
         args_arr[k].silent = silent;
+        args_arr[k].found_ptr = &found;
 
 
         pthread_create(threads + k, NULL, crack_thread_wrapper, args_arr + k);
