@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <unistd.h>
 
 #include <pthread.h>
 
@@ -54,8 +55,7 @@ void* crack_thread_wrapper(void* args) {
 void launch_multithreads(char* hash_digest, char* alf, int h_func, unsigned min, unsigned limit, bool silent, unsigned nb_threads) {
     //---Thread number
     if (nb_threads == 0) {
-        //TODO: get the number of threads from the current machine !
-        nb_threads = 20;
+        nb_threads = (unsigned) sysconf(_SC_NPROCESSORS_ONLN);
     }
 
     //---Init

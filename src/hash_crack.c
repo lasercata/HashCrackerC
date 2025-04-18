@@ -147,7 +147,7 @@ void crack_thread_i(unsigned i, unsigned n, char* alf, char* expected_digest, in
                 boxed_print(word);
             }
 
-            //TODO: stop all the other threads
+            // Stop all the other threads
             *found_ptr = true;
 
             free(word);

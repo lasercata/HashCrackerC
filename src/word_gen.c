@@ -102,7 +102,7 @@ arr convert_to_base(unsigned long n, unsigned long b) {
  *
  * @returs the word corresponding to the number `n`.
  */
-char* get_word(unsigned long n, char* alf) { //TODO: free result
+char* get_word(unsigned long n, char* alf) {
     arr digits = convert_to_base(n, strlen(alf) + 1);
 
     // print_arr(digits);
