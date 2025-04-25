@@ -62,7 +62,7 @@ void hash(char* txt, unsigned long len, int h_func, char* digest) {
     EVP_DigestFinal_ex(mdctx, md_value, &md_len);
 
     for (unsigned int i = 0; i < md_len; ++i)
-        sprintf(&digest[i * 2], "%02x", (unsigned int) md_value[i]);
+        snprintf(&digest[i * 2], DIGEST_SIZE, "%02x", (unsigned int) md_value[i]);
 
     EVP_MD_CTX_free(mdctx);
 }
