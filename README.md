@@ -2,6 +2,10 @@
 
 Multithreaded hash cracker.
 
+It generates all possible words from the given alphabet (default is `a-z`), of length starting from `min` (default `1`) to `max` (default infinity).
+For example, if the alphabet is `01`, then it will try the hash against `0`, `1`, `00`, `01`, `10`, `11`, ...
+This work is evenly distributed between `nb_threads` threads (by default corresponding to the number of thread of the machine).
+
 This is a rewrite in C of [lasercata/HashCracker](https://github.com/lasercata/HashCracker)
 
 ## Usage
